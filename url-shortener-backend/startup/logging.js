@@ -35,8 +35,7 @@ module.exports = function () {
 
   winston.add(new winston.transports.File({ filename: "logfile.log" }));
 
-  const mongoClient = new MongoClient(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
-  // const mongoClient = new MongoClient(  process.env.LOCAL_DB, { useNewUrlParser: true, useUnifiedTopology: true })
+  const mongoClient = new MongoClient(dbUrl)
 
   mongoClient.connect();
 

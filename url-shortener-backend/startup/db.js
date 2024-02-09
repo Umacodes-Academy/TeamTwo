@@ -14,7 +14,7 @@ switch (process.env.NODE_ENV) {
 }
 
 module.exports = function() {
-    mongoose.connect("mongodb://localhost/url-shortener")
-        .then(() => console.log(`Connected to mongodb... ${dbUrl}`))
-        .catch(() => console.error("Could not connect to mongodb"))
+    mongoose.connect(dbUrl)
+        .then(() => console.log(`Connected to mongodb...`))
+        .catch(() => console.error(`Could not connect to mongodb`))
 }
