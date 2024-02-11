@@ -1,40 +1,57 @@
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
 const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 
-let url = process.env.DB_CONNECTION_DEV
+require('dotenv').config();
+
+let url = process.env.DB_CONNECTION_DEV;
 const app = express();
-const client = new MongoClient(url)
+const client = new MongoClient(url);
 
-async function run() {
-    try {
-      // Connect the client to the server	(optional starting in v4.7)
-      await client.connect();
-      // Send a ping to confirm a successful connection
-      await client.db("admin").command({ ping: 1 });
-      console.log("Pinged your deployment. You successfully connected to MongoDB!");
-    } finally {
-      // Ensures that the client will close when you finish/error
-      await client.close();
+app.use(bodyParser.urlencoded({
+    extended: false
+ }));
+
+// app.get('/url/lists', (req, res) => {
+
+// })
+
+app.post('/url/create/:input_url', async (req, res) => {
+    try{
+        
+        await client.connect();
+        console.log("Connected correctly to server");
+
+        const db = client.db("url_shortener");
+
+        const collection = db.collection("urls");
+
+        const doc = {
+            url: req.params.input_url
+        }
+        const result = await collection.insertOne(doc);
+        
+        console.log("Inserted document intor the collection", result);
+        res.status(200).send("Document inserted");
+        
+    } catch(err) {
+        console.log(err.stack);
     }
-  }
-
-run().catch(console.dir);
-
-app.get('/', (req, res) => {
-    const list = ["hello", "world", "Chris", "your", "mom"];
-    res.send(list);
+     finally {
+        await client.close();
+        res.end();
+    }
 })
 
-app.post('/', (req, res) => {
-    
-})
-
-app.get('/api/student/:id1/:id2', (req, res) => {
+app.put('/url/update/:url/:new_url', (req, res) => {
     const params = req.params;
     res.send(params)
 })
 
+app.delete('/url/remove/:url', (req, res) => {
+
+})
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`Listen on port ${port}`));
