@@ -6,16 +6,16 @@ const LinkResult = ({ shortenLink, loading, error }) => {
 
     const [copied, setCopied] = useState(false)
 
-    
-    
+
+
     useEffect(() => {
         const timer = setTimeout(() => {
             setCopied(false);
         }, 1000);
-        
+
         return () => clearTimeout(timer)
     }, [copied])
-    
+
     if (loading) {
         return <p>Loading...</p>
     }
@@ -29,7 +29,7 @@ const LinkResult = ({ shortenLink, loading, error }) => {
             {shortenLink &&
                 (
                     <div className='url-shortLink-container'>
-                        {/* <p className='result-text'>{shortenLink}</p> */}
+                        <p className='result-text'>{shortenLink}</p>
                         <CopyToClipboard
                             text={shortenLink}
                             onCopy={() => setCopied(true)}
