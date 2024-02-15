@@ -7,8 +7,9 @@ const port = process.env.PORT || 3000;
 // app.get('/', (req, res) => {
 //     res.send("Hello world!");
 // });
-
+app.use(express.json());
 app.listen(port, () => console.log(`listening on port ${port}`));
 
 require("./startup/logging")();
 require("./startup/db")();
+require("./startup/routes")(app);
