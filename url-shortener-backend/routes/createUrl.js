@@ -4,14 +4,16 @@ const shortid = require("shortid");
 const _ = require("lodash")
 const {urlSchema, validateUrl, Url} = require('../models/urls');
 
-const port = 8888;
-// list out all the urls
-router.get('/url/list', async (req, res) => {
+
+// list out the url
+router.get('/:id', async (req, res) => {
     try{
-        const db = client.db("url_shortener");
-        const collection = db.collection("urls");
-        const data = await collection.find().toArray();    
-        res.send(data);
+        const data = await Url.find({shortenedUrl: req.params.id});
+        if(data.length > 0){
+            const redirectUrl = data[0].originalUrl;
+            res.redirect(redirectUrl);
+        }
+        res.send("Url not found");
     }
     catch(err){
         res.status(500).send("Error getting documents");
@@ -27,7 +29,7 @@ router.post('/create', async (req, res) => {
         if (!originalUrl) {
             return res.status(400).json({ error: `Missing required fields ${originalUrl}` });
         }
-        
+    
         const { error } = validateUrl({ originalUrl });
         if (error) return res.status(400).send(`${error.message} ${originalUrl}` );
 
@@ -35,7 +37,7 @@ router.post('/create', async (req, res) => {
 
         const newUrl = new Url({
             originalUrl: originalUrl,
-            shortenedUrl: `http://localhost:${port}/${shortUrl}`
+            shortenedUrl: shortUrl
         });
 
         await newUrl.save();
