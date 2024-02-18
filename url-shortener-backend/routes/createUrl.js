@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const shortid = require("shortid");
 const _ = require("lodash")
 const {urlSchema, validateUrl, Url} = require('../models/urls');
 
+const port = 8888;
 // list out all the urls
 router.get('/url/list', async (req, res) => {
     try{
@@ -18,7 +20,7 @@ router.get('/url/list', async (req, res) => {
 })
 
 // create new url, possible shorten url logic
-router.post('/create/', async (req, res) => {
+router.post('/create', async (req, res) => {
     try{
         let {originalUrl} = req.body;
 
@@ -29,8 +31,11 @@ router.post('/create/', async (req, res) => {
         const { error } = validateUrl({ originalUrl });
         if (error) return res.status(400).send(`${error.message} ${originalUrl}` );
 
+        let shortUrl = shortid.generate()
+
         const newUrl = new Url({
-            originalUrl: originalUrl
+            originalUrl: originalUrl,
+            shortenedUrl: `http://localhost:${port}/${shortUrl}`
         });
 
         await newUrl.save();
