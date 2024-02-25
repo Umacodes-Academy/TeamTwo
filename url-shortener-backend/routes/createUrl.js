@@ -43,7 +43,9 @@ router.post('/create', async (req, res) => {
         await newUrl.save();
         
         console.log("Inserted document intor the collection", newUrl);
-        res.status(200).send("Document inserted");
+        res.status(200).json({
+            shortenedUrl: shortUrl,
+        });
         
     } catch(err) {
         res.status(500).send("Error creating document");
