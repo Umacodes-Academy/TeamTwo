@@ -24,12 +24,14 @@ const LinkResult = ({ shortenLink, loading, error }) => {
         return <p>something went wrong with server</p>
     }
 
+    console.log(shortenLink)
+
     return (
         <>
             {shortenLink &&
                 (
                     <div className='url-shortLink-container'>
-                        <p className='result-text'>{shortenLink}</p>
+                        {/* <p className='result-text'>{shortenLink}</p> */}
                         <CopyToClipboard
                             text={shortenLink}
                             onCopy={() => setCopied(true)}

@@ -15,7 +15,7 @@ function App() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await axios(`https://cleanuri.com/api/v1/shorten?url=${inputValue}`)
+      const res = await axios(`https://teamtwo.onrender.com/url/create/${inputValue}`)
       setShortenLink(res.data)
     } catch (error) {
       setError(error)
