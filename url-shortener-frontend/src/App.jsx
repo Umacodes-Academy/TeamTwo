@@ -15,13 +15,7 @@ function App() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await axios(`https://teamtwo.onrender.com/url/create/${inputValue}`,
-        JSON.stringify(),
-        {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true
-        }
-      )
+      const res = await axios(`https://teamtwo.onrender.com/url/create/${inputValue}`)
       setShortenLink(res.data)
     } catch (error) {
       setError(error)
